@@ -1,17 +1,209 @@
-# myportofolio_mobile
+# Muhammad Hasbi Assiddiq - Portfolio (PBP Tugas 1)
 
-A new Flutter project.
+- **NPM:** 2506624360
+- **Prodi:** S1 Sistem Informasi, Universitas Indonesia
+- **PWS Deployment:** http://muhammad.hasbi52.pws.cs.ui.ac.id/
 
-## Getting Started
+## Setup
 
-This project is a starting point for a Flutter application.
+1. Clone repositori ke perangkat lokal.
+2. Buat dan aktifkan *virtual environment* (`python -m venv env`).
+3. Install dependensi (`pip install -r requirements.txt`).
+4. Jalankan server lokal (`python manage.py runserver`).
 
-A few resources to get you started if this is your first Flutter project:
+### Tugas 1
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+1. Pada Tutorial dan Tugas 1, Anda diberi kebebasan untuk menentukan tampilan dari website portofolio Anda. Saat Anda merancang struktur HTML yang digunakan, apakah Anda menggunakan elemen semantik HTML5 seperti `<section>`, `<article>`, atau `<aside>` ? Jika iya, bagaimana elemen tersebut membantu Anda dalam membuat *static web*? Jika tidak, mengapa tanpa elemen tersebut sudah memenuhi kebutuhan desain Anda?
+   - Ya, saya menggunakan elemen semantik seperti `<section>` untuk memisahkan bagian utama halaman dan `<article>` untuk membungkus kartu konten. Elemen ini membantu menyusun struktur *static web* yang bersih, mudah dibaca, dan memudahkan pengaturan CSS secara modular.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+2. Ketika Anda mengatur CSS Anda agar tetap *responsive*, tantangan tata letak apa yang Anda temukan? Bagaimana Anda mengevaluasi elemen mana yang harus diubah posisinya atau diprioritaskan ukurannya saat berpindah dari tampilan desktop ke mobile?
+   - Tantangan utamanya adalah menjaga agar kartu konten tidak menumpuk atau terpotong di layar HP. Masalah ini diatasi dengan *responsive grid* (`grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))`) supaya tata letaknya otomatis menyesuaikan dan turun ke bawah secara vertikal pada layar kecil.
+
+3. Website yang Anda buat saat ini adalah *static web* murni. Batasan apa yang Anda rasakan saat mencoba menyajikan informasi pada portofolio Anda secara optimal? Berdasarkan batasan tersebut, fungsionalitas dinamis apa yang ingin Anda persiapkan dan tambahkan pada iterasi proyek selanjutnya?
+   - Batasan utamanya adalah seluruh konten masih tertulis manual di file HTML, sehingga pembaruan data memerlukan penyuntingan kode. Pada iterasi berikutnya, saya ingin menambahkan integrasi database menggunakan Django ORM dan *admin dashboard* agar konten portofolio bisa dikelola secara dinamis.
+
+## AI Disclosure
+- **Peran AI:** AI dimanfaatkan sebagai *learning partner* atau tutor untuk berdiskusi mengenai konsep HTML/CSS, referensi perintah Git, dan struktur penulisan portofolio.
+- **Keterbatasan AI:** Draf awal yang diberikan AI terkadang masih bersifat generik dan belum sepenuhnya selaras dengan struktur direktori lokal Django atau standar spesifik tata letak yang diinginkan.
+- **Perbaikan & Eksekusi Manual:** Seluruh kode ditinjau ulang, diuji langsung secara mandiri lewat server lokal (`runserver`), serta disesuaikan secara manual agar akurat dengan data profil asli dan memenuhi standar rubrik penilaian.
+
+### Tugas 2
+
+1. Jelaskan alur yang terjadi ketika pengguna membuka halaman portofolio baru, mulai dari permintaan yang diterima proyek hingga data ditampilkan pada *browser*. Dalam jawabanmu, jelaskan peran `urls.py` proyek, `urls.py` aplikasi, *view*, model, dan *template*.
+   - Permintaan pertama diterima oleh `urls.py` level proyek, yang meneruskannya ke `urls.py` aplikasi `main` lewat `include()`. Di `main/urls.py`, path `"projects/"` dicocokkan ke *view* `show_projects`. *View* ini mengambil data lewat `Project.objects.all()`, memasukkannya ke `context`, lalu me-`render` `template` `projects.html`. Di *template*, data ditampilkan dengan perulangan `{% for %}`, dan hasil HTML-nya dikirim balik sebagai *response* ke *browser*.
+
+2. Mengapa data untuk bagian portofolio baru sebaiknya disimpan pada model dan tidak ditulis langsung di dalam *template*? Jelaskan dampaknya terhadap kemudahan pemeliharaan dan pengembangan aplikasi.
+   - Karena kalau data ditulis langsung di *template* (*hardcoded*), setiap kali ada perubahan data saya harus edit file HTML dan deploy ulang. Kalau disimpan di model, data bisa diubah kapan saja lewat Django *admin* atau *shell* tanpa menyentuh kode *template* sama sekali, sehingga lebih mudah dipelihara dan tetap konsisten di semua halaman yang memakai data yang sama.
+
+3. Apa perbedaan fungsi `makemigrations` dan `migrate` pada Django? Berikan contoh perubahan model yang mengharuskanmu menjalankan kedua perintah tersebut.
+   - `makemigrations` membuat berkas migrasi berdasarkan perubahan yang terdeteksi di model, tanpa langsung mengubah database. `migrate` menerapkan berkas migrasi itu ke database sehingga skemanya benar-benar berubah. Contohnya saat saya menambahkan model `Project` baru — setelah nulis `class Project` di `models.py`, saya jalankan `makemigrations` untuk bikin file migrasinya, lalu `migrate` supaya tabelnya benar-benar terbentuk di database dan bisa mulai diisi data.
+
+## AI Disclosure
+- **Peran AI:** AI digunakan sebagai *learning partner* untuk berdiskusi menyusun struktur model `Project`, alur *view*-*template* mengikuti pola `Experience` yang sudah ada, serta membantu menelusuri penyebab error saat pengisian data lewat *shell* (`ImportError`) dan konfigurasi `urls.py`.
+- **Keterbatasan AI:** Saran awal AI perlu disesuaikan lagi dengan konvensi penamaan dan struktur proyek yang sudah saya buat sebelumnya, termasuk detail *field* model dan isi data aktual.
+- **Perbaikan & Eksekusi Manual:** Menuliskan dan menjalankan mandiri perintah `makemigrations`/`migrate`, mengisi data lewat *shell*, menguji halaman lewat `runserver`, serta menulis `unit test` dan menyesuaikannya sampai seluruh test lulus.
+
+### Tugas 3
+
+1. Jelaskan mengapa kita menggunakan ModelForm pada Django alih-alih membuat form HTML secara manual. Selain itu, jelaskan pula mengapa kita diwajibkan menambahkan {% csrf_token %} pada form tersebut!   
+   - Menggunakan ModelForm jauh lebih efisien karena Django secara otomatis membuatkan elemen input HTML (beserta validasinya) berdasarkan struktur model yang sudah ada (seperti Project atau Experience). Ini menghemat waktu, mencegah penulisan kode yang berulang, dan memudahkan penyimpanan data langsung ke database. Sementara itu, {% csrf_token %} sangat diwajibkan untuk keamanan dari serangan Cross-Site Request Forgery. Token unik ini berfungsi sebagai verifikasi keamanan untuk memastikan bahwa data (POST request) yang dikirim benar-benar berasal dari pengguna di situs web kita sendiri, bukan dari script jahat di situs web lain.
+
+2. Pada Tutorial 03, kita membahas format data JSON dan XML. Mengapa JSON lebih disukai dalam pengembangan aplikasi web modern dibandingkan XML?
+   - JSON (JavaScript Object Notation) lebih disukai karena sintaksnya jauh lebih ringan, ringkas, dan lebih mudah dibaca dibandingkan XML. XML cenderung boros karakter karena mengharuskan penulisan tag pembuka dan penutup di setiap data. Selain itu, JSON berakar dari JavaScript, sehingga data yang dikirim dalam format JSON bisa langsung diolah (parsing) secara native dan sangat cepat oleh sistem frontend web modern tanpa memerlukan alat konversi tambahan.
+
+3. Jelaskan alur yang terjadi saat kamu menggunakan fungsi view untuk mengembalikan data portofoliomu dalam bentuk JSON. Mengapa kita perlu melakukan proses serialization pada model Django sebelum datanya dikembalikan?
+   - Alurnya dimulai ketika klien (browser/Postman) melakukan request ke endpoint URL yang telah ditentukan (contoh: /api/experience/). URL tersebut mengarahkan request ke fungsi view (seperti get_experience_json). Di dalam view, aplikasi akan melakukan query ke database (misal: Experience.objects.all()). Data yang didapat ini masih berupa QuerySet (objek kompleks bawaan Python/Django). Di sinilah proses serialization diperlukan: kita harus mengubah objek kompleks tersebut menjadi format teks (seperti string JSON) agar datanya bisa dikirim melalui jaringan internet (protokol HTTP). Setelah diubah menjadi JSON, string tersebut dibungkus menggunakan HttpResponse dengan tipe konten application/json dan dikirimkan kembali sebagai response ke klien.
+
+## AI Disclosure
+- **Peran AI:** AI digunakan sebagai pair programmer untuk berdiskusi memahami sintaks ModelForm, logika pengambilan data berdasarkan ID untuk fitur Update (penggunaan instance), serta membantu merancang struktur Pop-up Modal HTML untuk konfirmasi penghapusan data.
+- **Keterbatasan AI:** Kode snippet awal yang diberikan AI seringkali menggunakan gaya styling atau kelas CSS bawaan (default) yang tidak cocok dengan desain antarmuka portofolio yang sudah saya buat di Tugas 1. AI juga kadang memberikan saran impor (import statements) yang kurang lengkap atau tidak terpakai.
+- **Perbaikan & Eksekusi Manual:** Secara manual mengintegrasikan logika views.py dan forms.py agar sinkron dengan model Experience saya. Juga menulis ulang penamaan kelas CSS pada form dan modal agar menyatu mulus dengan style.css bawaan proyek saya, serta melakukan uji coba fitur Create, Update, Delete, dan pencarian (Search) langsung di server lokal dengan meminta bantuan teman.
+
+### Tugas 4
+
+## AI Disclosure
+
+Dalam mengerjakan Tugas 4 ini, saya menggunakan bantuan **Google Gemini** sebagai teman diskusi untuk membantu memecahkan masalah (*troubleshooting*) dan memahami konsep.
+
+**Bagian yang dibantu AI:**
+* **Session & Cookies:** AI membantu menjelaskan alur kerja *cookie* untuk fitur `last_login` dan cara menghapusnya saat *logout*.
+* **Zona Waktu:** Membantu memperbaiki masalah perbedaan jam antara *server* dan waktu lokal dengan mengarahkan saya mengubah konfigurasi `TIME_ZONE` di `settings.py`.
+* **Hak Akses (Otorisasi):** Memberi petunjuk langkah demi langkah cara membatasi akses di `views.py` menggunakan `@login_required`, serta panduan mengatur grup *Editor* melalui antarmuka Django Admin.
+* **Fitur Star:** Membantu merumuskan logika relasi *database* (`ManyToManyField`) dan cara kerja *toggle star* pada *backend*.
+
+**Strategi Prompting & Penyesuaian Manual:**
+Saya menggunakan AI secara bertahap (*step-by-step*). Setiap kali menemui *error* atau kebingungan, saya memberikan *screenshot* masalah atau potongan kode saya kepada AI, lalu meminta penjelasan letak kesalahannya.
+
+Walaupun sangat membantu, kode dari AI jarang bisa langsung di-*copy-paste* 100%. Ada beberapa penyesuaian manual yang harus saya lakukan:
+* AI sering tidak tahu struktur letak file HTML saya, jadi saya harus menyesuaikan sendiri lokasi penempatan *template tag* agar tampilan web tidak berantakan.
+* Sesekali ada karakter yang berlebih dari jawaban AI (seperti kelebihan tanda kurung), sehingga saya tetap harus melakukan *debugging* dan membaca ulang logika kodenya untuk memperbaiki *syntax error*.
+
+### Tugas 5
+
+### Jawaban Pertanyaan Reflektif
+
+**1. Jelaskan apa itu *debouncing* dan mengapa teknik ini penting diterapkan pada fitur pencarian yang menggunakan AJAX!**
+*Debouncing* adalah pola pemrograman (*design pattern*) yang digunakan untuk membatasi laju eksekusi sebuah fungsi, dengan cara memberikan jeda waktu (misalnya 500ms) setelah *event* terakhir kali dipicu. Pada fitur pencarian AJAX, teknik ini sangat esensial karena tanpa *debouncing*, *event listener* akan menembakkan *request* HTTP ke server pada setiap ketikan *keystroke*. Jika pengguna mengetik kata "Universitas", browser akan mengirim 11 *request* secara beruntun dalam hitungan milidetik. Hal ini sangat memboroskan *bandwidth*, menurunkan performa UX (karena *UI freezing*), dan berisiko memicu *bottleneck* atau *overload* pada *server*. Dengan *debouncing*, fungsi `fetch()` hanya akan dieksekusi satu kali setelah pengguna benar-benar berhenti mengetik, memastikan penggunaan *resource* yang optimal.
+
+**2. Jelaskan fungsi dari penggunaan `await` ketika kita menggunakan `fetch()`. Apa yang akan terjadi jika kita tidak menggunakan `await`?**
+Dalam eksekusi program *asynchronous*, `fetch()` mengembalikan sebuah *Promise* (janji bahwa data akan dikembalikan di masa depan, entah berhasil atau gagal), bukan data aktual secara instan. Kata kunci `await` berfungsi untuk memberi tahu *JavaScript engine* agar menjeda eksekusi kode pada baris tersebut dan menunggu hingga *Promise* dari `fetch()` berstatus *resolved* (selesai mengambil data dari jaringan). 
+Jika kita mengabaikan `await`, JavaScript yang bersifat *non-blocking* akan langsung mengeksekusi baris kode berikutnya seketika. Akibatnya, saat program mencoba memanipulasi atau merender variabel hasil `fetch()` ke dalam DOM HTML, variabel tersebut masih berstatus *Pending Promise* atau *undefined*. Hal ini akan memicu *Runtime Error* dan membuat antarmuka gagal menampilkan data JSON yang diharapkan.
+
+**3. Jelaskan apa itu serangan XSS (*Cross-Site Scripting*) dan mengapa data yang ditampilkan melalui AJAX/JavaScript lebih rentan terhadap serangan ini daripada data yang ditampilkan langsung melalui template Django!**
+XSS (*Cross-Site Scripting*) adalah kerentanan keamanan aplikasi web di mana peretas (hacker) berhasil mengeksekusi skrip berbahaya (biasanya JavaScript) di dalam *browser* pengguna lain dengan cara menyisipkannya ke dalam basis data atau URL. 
+Data yang dirender menggunakan AJAX/JavaScript (seperti menetapkan *string* ke `innerHTML`) sangat rentan karena *browser* akan membaca dan mengeksekusi *string* tersebut sebagai elemen HTML atau skrip secara mentah. Jika data mengandung payload seperti `<img src="x" onerror="alert('Hacked')">`, skrip tersebut akan langsung berjalan. Sebaliknya, *template engine* Django (`{{ variable }}`) memiliki mekanisme *auto-escaping* bawaan secara *default*. Fitur ini secara otomatis mengubah karakter-karakter khusus HTML menjadi entitas aman (contoh: `<` diubah menjadi `&lt;` dan `>` menjadi `&gt;`) sebelum dirender ke klien, sehingga *browser* hanya akan membacanya sebagai teks biasa, bukan instruksi yang dapat dieksekusi.
+
+
+### AI Disclosure & Analisis Kritis Pembelajaran
+
+Dalam penyelesaian Tugas 5 ini, saya menggunakan AI (Google Gemini) sebagai *pair-programmer*. Melalui proses ini, saya mengalami transisi pembelajaran yang signifikan dari ketergantungan pasif menuju pemanfaatan AI yang analitis, sesuai dengan prinsip *Reinforcement Sehat*.
+
+**1. Fase Awal: Terjebak dalam Pola "Reinforcement Pasif"**
+Pada awal pengerjaan, saya memposisikan AI murni sebagai **"Answer Machine"**. Saya menghindari usaha kognitif dengan langsung meminta *full code* untuk fitur AJAX dan menempelkannya (*copy-paste*) ke dalam *codebase* saya tanpa evaluasi struktural yang mendalam. Akibatnya, saya kehilangan konteks dari sistem yang saya bangun sendiri.
+
+**2. Titik Balik (TRY & THINK): Keterbatasan Konteks AI pada Error 500**
+Pendekatan pasif tersebut terbukti gagal total ketika aplikasi saya mengalami *Internal Server Error (500)*. AI, yang hanya melihat potongan kode *views* dan *template* yang saya berikan, salah mendiagnosis masalah dan terus merekomendasikan perbaikan sintaksis pada `views.py`. Karena AI tidak memiliki akses absolut (*blind spot*) terhadap keseluruhan proyek, saya terpaksa harus menghentikan ketergantungan tersebut dan mulai membedah masalah secara mandiri (Fase *Try & Think*). Saya menjalankan server lokal, menelusuri *traceback* di terminal, dan menemukan bahwa akar masalahnya adalah *dangling import* (`ImportError` fungsi `cetak_admin_pws`) yang tertinggal di `urls.py` dari Tugas 4. 
+
+**3. Transisi ke "Learning Coach" & Perbaikan Manual (REVISE & LEARN)**
+Setelah menyadari batasan AI, saya mengubah pola *prompting* saya. Alih-alih meminta kode instan, saya meminta petunjuk (*hint*), evaluasi logika, dan penjelasan konsep (Fase *Revise & Learn*). Berikut adalah integrasi dan perbaikan manual tingkat lanjut yang saya lakukan setelah berdiskusi dengan AI:
+*   **Restrukturisasi UI/UX (DOM Mapping):** Logika *render* HTML DOM yang dihasilkan AI awalnya menggunakan struktur div generik yang merusak desain. Saya secara manual membedah variabel JSON tersebut dan memetakannya kembali ke dalam arsitektur kelas CSS `retro-window`, `title-bar`, dan sistem *grid* tema Y2K portofolio saya untuk memastikan konsistensi antarmuka.
+*   **Layer Keamanan XSS Ganda:** AI menyarankan fungsi manipulasi Regex `escapeHTML` di sisi *client/JavaScript*. Setelah mempelajari fungsinya, saya memutuskan untuk menerapkan pertahanan ganda, yaitu membersihkan *input* di sisi *backend* menggunakan `strip_tags` pada *ModelForm* Django, sekaligus melakukan *escaping* di sisi *frontend* saat *rendering* AJAX.
+*   **Integrasi Toast Dinamis:** Saya menolak menggunakan *default* `alert()` browser dari *output* mentah AI, dan memodifikasi *Promise resolver* pada `fetch()` untuk memicu komponen `showToast()` dari tutorial sebelumnya agar interaksi pengguna jauh lebih profesional.
+
+**Kesimpulan:**
+Tugas ini menyadarkan saya bahwa jika AI hanya digunakan untuk memberi jawaban tercepat, saya tidak benar-benar belajar, melainkan hanya mahir dalam merangkai pertanyaan (prompt). Memposisikan AI sebagai *Learning Coach* untuk berdiskusi, memberikan *hint*, dan memberikan umpan balik atas *trial-and-error* mandiri adalah metode paling efektif untuk membangun pemahaman yang solid.
+
+### Tugas 6
+
+#### Jawaban Pertanyaan Reflektif
+
+**1. Jelaskan apa yang dimaksud dengan REST dan mengapa mengembalikan JSON saja belum cukup untuk menyebut sebuah API sebagai RESTful! Jelaskan pula perbedaan PUT dan PATCH.**
+REST (Representational State Transfer) adalah gaya arsitektur untuk merancang API yang berorientasi pada *resource*. Mengembalikan JSON saja belum cukup karena REST mewajibkan penggunaan standar HTTP secara penuh: menggunakan metode HTTP yang tepat secara semantik (GET untuk membaca, POST untuk membuat), menggunakan HTTP Status Codes standar (200 OK, 201 Created, 404 Not Found), serta bersifat *stateless*.
+*Perbedaan:* `PUT` digunakan untuk mengganti seluruh data objek (seluruh *field* harus dikirim ulang secara utuh), sedangkan `PATCH` digunakan untuk *partial update* atau memperbarui sebagian *field* saja tanpa menghapus atau mengubah *field* yang tidak disertakan dalam *request*.
+
+**2. Jelaskan peran serializer pada Django REST Framework! Apa keuntungannya dibanding merakit dictionary manual seperti di Tutorial 05?**
+Peran utama *serializer* adalah menjembatani konversi data kompleks (seperti *instance* Model Django atau QuerySet) menjadi format *native* Python (seperti list/dict) agar mudah di-*render* menjadi JSON, serta sebaliknya (dari JSON divalidasi kembali menjadi Model). 
+*Keuntungan:* Mengeliminasi kode repetitif, mencegah eksploitasi data melalui validasi *built-in* (seperti `strip_tags` untuk mencegah XSS), meng-handle relasi *Many-To-Many* (seperti fitur *star*) secara otomatis tanpa penulisan *query* manual yang rumit, dan dapat diintegrasikan langsung dengan *auto-generated schema* untuk dokumentasi API (seperti Swagger).
+
+**3. Jelaskan perbedaan autentikasi dan otorisasi pada DRF! Mengapa hak akses harus diperiksa dengan permission class di server, bukan hanya menyembunyikan tombol di template?**
+- **Autentikasi (Authentication):** Proses verifikasi identitas (Menjawab pertanyaan: "Siapa pengguna ini?").
+- **Otorisasi (Authorization/Permission):** Proses penentuan hak akses (Menjawab pertanyaan: "Apa yang boleh dilakukan oleh pengguna ini?").
+Menyembunyikan tombol (*UI Hiding*) di *template frontend* bukanlah fitur keamanan, melainkan sekadar manipulasi tampilan. Jika peretas mengetahui *endpoint* API (misalnya `/api/v1/projects/1/`), mereka dapat mem-bypass antarmuka web dan menembakkan *request* DELETE secara langsung melalui antarmuka baris perintah (cURL) atau aplikasi Postman. *Permission class* di level *server* memastikan perlindungan arsitektural mutlak di mana *request* terlarang akan langsung diblokir (403 Forbidden) sebelum sistem menyentuh basis data.
+
+**4. Jelaskan mengapa permintaan yang mengubah data tetap memerlukan token CSRF ketika API memakai SessionAuthentication! Mengapa test yang memakai force_authenticate tidak cukup untuk membuktikan bahwa perlindungan CSRF berjalan?**
+`SessionAuthentication` mengandalkan *cookies* sesi yang tersimpan di dalam *browser*. Saat ada skrip atau *request* berbahaya dari situs web eksternal (serangan Cross-Site), *browser* secara otomatis akan melampirkan *cookies* tersebut karena mengira permintaan itu sah. Token CSRF mutlak diperlukan sebagai lapisan validasi sekunder yang memverifikasi bahwa *request* tersebut diinisiasi secara sadar dari *form* atau *script* internal di dalam aplikasi kita sendiri.
+Penggunaan metode `force_authenticate` di dalam kelas *unit test* akan menyuntikkan objek `User` secara langsung ke dalam objek `request`, sehingga memotong (*bypass*) seluruh lapisan *middleware* Django, termasuk *CSRF Middleware*. Untuk memvalidasi bahwa proteksi CSRF benar-benar aktif dalam pengujian, kita harus mensimulasikan *environment* klien yang ketat menggunakan `APIClient(enforce_csrf_checks=True)` yang dipadukan dengan pemanggilan fungsi `.login()`.
+
+---
+
+#### AI Disclosure & Analisis Kritis Pembelajaran
+Dalam pengerjaan Tugas 6 ini, saya kembali memposisikan AI (Google Gemini) sebagai *Pair-Programmer* dan *Learning Coach*, mempertahankan prinsip *Reinforcement Sehat* dari tugas sebelumnya.
+
+**1. Diskusi Konseptual & Eksplorasi Arsitektur (Fase Try & Think)**
+Saya menggunakan AI untuk memahami transisi paradigma dari arsitektur konvensional (tradisional) menuju *Single Page Application* (SPA) yang digerakkan oleh RESTful API. AI sangat membantu dalam menjelaskan perbedaan konseptual antara mekanisme `SessionAuthentication` bawaan Django dengan autentikasi berbasis Token mandiri, serta mengurai urgensi pengiriman *Header* `X-CSRFToken` saat mengeksekusi metode `fetch()` di JavaScript.
+
+**2. Keterbatasan AI pada Spesifikasi Rubrik & Routing Kompleks**
+Kode awal yang disarankan AI untuk kelas *Serializer* dan *Views* bersifat terlalu generik. AI menyarankan penggunaan integer standar untuk *Primary Key* dan penggunaan sintaks `__all__` pada parameter meta *fields*. AI tidak mengenali batasan spesifik rubrik tugas yang secara ketat melarang `__all__` dan mewajibkan struktur UUID. Selain itu, saat merancang *Custom Permission*, AI awalnya hanya memberikan skema otorisasi biner (Admin vs Umum), mengabaikan instruksi hierarki 4 lapis (Pengunjung, Pengguna Biasa, Editor, dan Pemilik/Superuser) yang menjadi prasyarat penilaian.
+
+**3. Perbaikan Manual & Integrasi Sistem (Fase Revise & Learn)**
+Menyadari *blind spot* AI terhadap spesifikasi proyek dan arsitektur model basis data saya, saya turun tangan melakukan perombakan serta integrasi manual secara menyeluruh:
+- **Custom Permissions yang Dinamis:** Saya secara mandiri merancang kelas `IsPortfolioOwnerOrEditorOrReadOnly` di dalam `permissions.py` yang memvalidasi *queryset* `request.user.groups` untuk memisahkan peran spesifik grup 'Editor', memastikan keamanan *Object-Level* dan *View-Level* berjalan sinkron.
+- **UUID Path Converter:** Saya merevisi struktur *routing* di dalam `api_urls.py` dari bentuk umum `<int:id>` menjadi `<uuid:id>` agar tidak terjadi *server crash* dengan arsitektur model basis data `Project` saya yang sudah dikonfigurasi menggunakan tipe data UUID sejak Tugas 2.
+- **Optimasi DOM Event Delegation:** Daripada mengikuti instruksi naif AI yang mengikat *event listener* pada setiap tombol *Star* dan *Delete* secara individual (yang sangat rentan memicu *memory leak* dan *bug* statis saat DOM dirender ulang secara asinkron), saya merombak struktur tersebut dan mengimplementasikan arsitektur *Event Delegation* pada *container* `<div id="grid">` utama. Logika ini memastikan seluruh interaksi tombol *Delete* dan *Star* tetap sangat responsif dan berkinerja stabil terlepas dari frekuensi manipulasi elemen oleh modul AJAX.
+
+# MyPortfolio Mobile (PBP - Individual Assignment 7)
+**Nama:** Muhammad Hasbi Assiddiq  
+**NPM:** 2506624360  
+**Kelas:** PBP A  
+
+---
+
+## 📝 Jawaban Pertanyaan Reflektif
+
+**1. Jelaskan apa yang dimaksud dengan *widget tree* pada Flutter dan bagaimana hubungan induk-anak (*parent-child*) bekerja antar-*widget*!**
+*Widget tree* adalah struktur hierarkis dari elemen-elemen antarmuka (UI) dalam aplikasi Flutter, di mana setiap komponen UI adalah sebuah widget. Hubungan *parent-child* bekerja dengan cara widget induk (*parent*) membungkus dan mengontrol tata letak serta mewariskan *state* atau *context* kepada widget anaknya (*child* atau *children*). Contohnya, `Scaffold` sebagai induk memberikan struktur dasar layar yang diisi oleh `AppBar` dan `Column` sebagai anak-anaknya.
+
+**2. Sebutkan semua *widget* yang kamu gunakan dalam proyek ini dan jelaskan fungsinya masing-masing!**
+- `MaterialApp`: Root widget untuk mengatur tema dasar dan navigasi aplikasi ala Material Design.
+- `Scaffold`: Menyediakan struktur visual dasar halaman (menampung AppBar dan Body).
+- `AppBar`: Bilah navigasi di bagian atas layar.
+- `SingleChildScrollView`: Membuat *layout* bisa di-*scroll* jika konten melebihi batas layar.
+- `Column` & `Row`: Menyusun widget anak secara vertikal (`Column`) atau horizontal (`Row`).
+- `Padding`: Memberikan jarak kosong (margin/padding) di sekitar widget anaknya.
+- `Card`: Wadah dengan efek bayangan (elevasi) dan sudut membulat.
+- `Container`: Kotak fleksibel untuk membungkus widget lain dengan properti padding, ukuran, dan dekorasi.
+- `GridView`: Menyusun deretan widget (tombol aksi) ke dalam format *grid* (kolom dan baris).
+- `Material`: Mengaplikasikan efek visual Material (seperti warna latar) pada tombol.
+- `InkWell`: Membuat area bisa diklik/disentuh dan memberikan efek visual *ripple* saat ditekan.
+- `Text`: Menampilkan string teks dengan kustomisasi gaya (`TextStyle`).
+- `Icon`: Menampilkan grafis vektor standar Material.
+- `SizedBox`: Memberikan spasi/jarak kosong statis antar widget.
+- `SnackBar`: Memunculkan pesan pop-up sementara di bawah layar setelah *event* klik.
+
+**3. Apa fungsi dari *widget* `MaterialApp`? Jelaskan mengapa *widget* ini umumnya digunakan sebagai *root widget* pada aplikasi Flutter!**
+`MaterialApp` berfungsi membungkus sejumlah widget yang umum dibutuhkan oleh aplikasi dengan gaya Material Design. Ia digunakan sebagai *root widget* karena secara otomatis mengonfigurasi *routing* halaman (navigator), tema global aplikasi (warna dan tipografi), serta pengaturan lokalisasi, sehingga developer tidak perlu mengonfigurasinya secara manual dari nol.
+
+**4. Jelaskan perbedaan antara `StatelessWidget` dan `StatefulWidget`! Kapan kita sebaiknya memilih yang satu dibandingkan yang lain?**
+- `StatelessWidget`: Widget statis yang tampilannya tidak akan berubah setelah dirender. Digunakan untuk UI konstan seperti teks statis, ikon, atau kartu informasi dasar yang datanya tidak bermutasi (seperti profil).
+- `StatefulWidget`: Widget dinamis yang memiliki *state* internal. Digunakan ketika UI perlu di-*re-render* atau berubah bentuk akibat interaksi user atau *update* data, seperti form input, *counter* angka, atau daftar yang mengambil data dari API.
+
+**5. Apa itu `BuildContext` dan mengapa penting di Flutter? Bagaimana penggunaannya di dalam metode `build`?**
+`BuildContext` adalah referensi atau "handle" yang menunjukkan posisi sebuah widget di dalam *widget tree*. Ini sangat penting karena memungkinkan sebuah widget berinteraksi dengan induk atau lingkungannya. Di dalam metode `build`, `context` digunakan untuk mengakses tema aplikasi (`Theme.of(context)`), ukuran layar (`MediaQuery.of(context)`), atau memunculkan elemen pop-up dari Scaffold induknya (`ScaffoldMessenger.of(context)`).
+
+**6. Jelaskan konsep *hot reload* di Flutter dan apa perbedaannya dengan *hot restart*! Kapan kita tidak bisa hanya mengandalkan *hot reload* dan harus melakukan *hot restart* atau *full restart*?**
+- *Hot Reload*: Menyuntikkan perubahan kode sumber langsung ke dalam Dart Virtual Machine tanpa menghancurkan *state* saat ini. Sangat cepat dan cocok untuk mengubah UI (seperti warna atau teks).
+- *Hot Restart*: Mereset *state* secara penuh dan mengompilasi ulang kode, mengembalikan aplikasi ke kondisi awal layar. Diperlukan ketika kita mengubah struktur dasar navigasi, mengubah nama kelas statis, menambahkan *assets* baru, atau mengubah logika di `initState()`.
+
+---
+
+## 🤖 AI Disclosure & Analisis Kritis Pembelajaran
+**Tools:** Google Gemini  
+
+**Strategi Prompting:** 
+Saya menggunakan AI sebagai *pair-programmer* untuk mendiskusikan arsitektur kode, struktur UI, dan efisiensi implementasi. Prompt yang saya gunakan berfokus pada pemecahan masalah secara konseptual, contohnya: 
+- *"Bagaimana cara menerapkan warna yang dinamis dan modular pada tiap item `GridView` di Flutter tanpa menggunakan percabangan `if-else` yang repetitif?"*
+- *"Berikan praktik terbaik (*best practice*) penerapan `ScaffoldMessenger` untuk memunculkan `SnackBar` saat `InkWell` ditekan pada sebuah `StatelessWidget`."*
+- *"Bagaimana cara menstrukturkan komentar docstring yang tepat pada komponen kartu *reusable* di Flutter?"*
+
+**Keterbatasan & Perbaikan Manual:** 
+AI sangat membantu dalam memberikan kerangka (*boilerplate*) awal dan ide penyelesaian masalah spesifik. Namun, kode yang dihasilkan AI seringkali kurang presisi terhadap aturan linter bawaan Dart (misalnya penempatan *keyword* `const` yang redundan atau terlewat). Oleh karena itu, saya harus melakukan penyesuaian manual pada *widget tree*, mengintegrasikan data statis profil saya, dan secara ketat menjalankan perintah `flutter analyze` untuk memastikan arsitektur kode bersih dan bebas dari *warning* (*No issues found*).
