@@ -5,6 +5,8 @@ void main() {
   runApp(const MyApp());
 }
 
+/// Root widget dari aplikasi myportofolio_mobile.
+/// Menggunakan StatelessWidget karena tidak ada state global yang berubah.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -13,13 +15,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'MyPortfolio',
       theme: ThemeData(
+        // Konfigurasi tema utama aplikasi menggunakan skema warna Material 3
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.indigo,
           secondary: Colors.amber[700],
         ),
         useMaterial3: true,
       ),
-      home: MyHomePage(),
+      home: MyHomePage(), // Memanggil halaman utama
     );
   }
 }
