@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myportofolio_mobile/widgets/left_drawer.dart';
 
 /// Model data untuk item menu pada halaman utama.
 /// Menyimpan nama, ikon, dan warna latar belakang masing-masing kartu.
@@ -19,13 +20,12 @@ class MyHomePage extends StatelessWidget {
   final String nama = "Muhammad Hasbi Assiddiq";
   final String kelas = "PBP A";
 
-  // Daftar item menu dengan implementasi pewarnaan modular (Nilai 4 Kualitas Kode)
-  // Menambahkan fitur ekstra: tombol "Hubungi Saya" (Nilai 4 Fungsionalitas)
+  // Daftar item menu dengan implementasi pewarnaan modular
   final List<ItemHomepage> items = [
     ItemHomepage("Lihat Proyek", Icons.folder, Colors.blue),
     ItemHomepage("Tambah Proyek", Icons.add_circle, Colors.green),
     ItemHomepage("Logout", Icons.logout, Colors.red),
-    ItemHomepage("Hubungi Saya", Icons.contact_mail, Colors.purple), // Fitur Ekstra
+    ItemHomepage("Hubungi Saya", Icons.contact_mail, Colors.purple),
   ];
 
   @override
@@ -37,7 +37,9 @@ class MyHomePage extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
+      drawer: const LeftDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -74,7 +76,7 @@ class MyHomePage extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                crossAxisCount: 2, // Dibuat 2 kolom agar tombol ekstra terlihat proporsional
+                crossAxisCount: 2,
                 shrinkWrap: true,
                 children: items.map((ItemHomepage item) {
                   return ItemCard(item);
@@ -88,7 +90,7 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-/// Komponen *reusable* untuk menampilkan kartu informasi ringkas.
+/// Komponen reusable untuk menampilkan kartu informasi ringkas.
 class InfoCard extends StatelessWidget {
   final String title;
   final String content;
@@ -122,7 +124,7 @@ class InfoCard extends StatelessWidget {
   }
 }
 
-/// Komponen *reusable* untuk menampilkan tombol interaktif.
+/// Komponen reusable untuk menampilkan tombol interaktif.
 class ItemCard extends StatelessWidget {
   final ItemHomepage item;
 
@@ -131,12 +133,10 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      // Menggunakan warna modular dari objek ItemHomepage
       color: item.color,
       borderRadius: BorderRadius.circular(15),
       child: InkWell(
         onTap: () {
-          // Memunculkan pesan interaktif saat tombol ditekan
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
