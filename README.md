@@ -207,3 +207,71 @@ Saya menggunakan AI sebagai *pair-programmer* untuk mendiskusikan arsitektur kod
 
 **Keterbatasan & Perbaikan Manual:** 
 AI sangat membantu dalam memberikan kerangka (*boilerplate*) awal dan ide penyelesaian masalah spesifik. Namun, kode yang dihasilkan AI seringkali kurang presisi terhadap aturan linter bawaan Dart (misalnya penempatan *keyword* `const` yang redundan atau terlewat). Oleh karena itu, saya harus melakukan penyesuaian manual pada *widget tree*, mengintegrasikan data statis profil saya, dan secara ketat menjalankan perintah `flutter analyze` untuk memastikan arsitektur kode bersih dan bebas dari *warning* (*No issues found*).
+
+---
+
+### Tugas 8: Flutter Navigation, Layouts, Forms, and Input Elements
+
+#### Progres Mingguan & Cara Menjalankan Aplikasi Mobile
+- **Minggu 1 (Tugas 7):** Inisialisasi proyek `myportofolio_mobile`, konfigurasi tema Material 3 (`ColorScheme.fromSeed`), pembuatan kartu profil (`InfoCard`), serta menu *grid* interaktif (`ItemCard`) dengan umpan balik `SnackBar`.
+- **Minggu 2 (Tugas 8):** Implementasi navigasi `LeftDrawer`, pembuatan halaman formulir `ExperienceFormPage` beserta validator modular `ExperienceValidators` yang selaras dengan model Django `Experience`, integrasi `showDatePicker()` dan `SwitchListTile`, dialog ringkasan `AlertDialog`, serta *refactoring* struktur direktori ke `lib/screens/`, `lib/widgets/`, dan `lib/utils/`.
+
+**Instruksi Menjalankan Aplikasi Flutter:**
+1. Masuk ke direktori proyek mobile (`cd myportofolio_mobile`).
+2. Unduh seluruh dependensi Flutter (`flutter pub get`).
+3. Jalankan pemeriksaan statis kode (`flutter analyze`).
+4. Jalankan aplikasi pada peramban atau emulator (`flutter run -d chrome`).
+
+---
+
+### Tugas 8: Flutter Navigation, Layouts, Forms, and Input Elements
+
+#### Progres Mingguan & Cara Menjalankan Aplikasi Mobile
+- **Minggu 1 (Tugas 7):** Inisialisasi proyek `myportofolio_mobile`, konfigurasi tema Material 3 (`ColorScheme.fromSeed`), pembuatan kartu profil (`InfoCard`), serta menu *grid* interaktif (`ItemCard`) dengan umpan balik `SnackBar`.
+- **Minggu 2 (Tugas 8):** Implementasi navigasi `LeftDrawer`, pembuatan halaman formulir `ExperienceFormPage` beserta validator modular `ExperienceValidators` yang selaras dengan model Django `Experience`, integrasi `showDatePicker()` dan `SwitchListTile`, dialog ringkasan `AlertDialog`, serta *refactoring* struktur direktori ke `lib/screens/`, `lib/widgets/`, dan `lib/utils/`.
+
+**Cara Menjalankan Proyek Mobile:**
+1. Masuk ke direktori proyek mobile (`cd myportofolio_mobile`).
+2. Install seluruh dependensi Flutter (`flutter pub get`).
+3. Jalankan pemeriksaan statis kode (`flutter analyze`).
+4. Jalankan aplikasi di *browser* atau emulator (`flutter run -d chrome`).
+
+#### Tugas 8
+
+1. **Perbedaan `Navigator.push()`, `Navigator.pushReplacement()`, dan `Navigator.pop()`:**
+   - `Navigator.push()` menambahkan *route* (halaman) baru ke puncak tumpukan (*top of stack*) tanpa menghapus halaman sebelumnya, sehingga pengguna tetap bisa kembali ke halaman asal menggunakan tombol *Back* bawaan perangkat.
+   - `Navigator.pushReplacement()` menggantikan *route* yang sedang aktif di puncak *stack* dengan *route* baru sehingga halaman sebelumnya langsung dihapus dari riwayat tumpukan navigasi.
+   - `Navigator.pop()` menghapus *route* yang sedang berada di puncak *stack* dan mengembalikan tampilan ke *route* tepat di bawahnya.
+   - Untuk membuka formulir dari kartu aksi pada beranda (`ItemCard`), metode yang digunakan adalah `Navigator.push()` menuju `ExperienceFormPage` maupun `ProjectFormPage` agar tombol *Back* sistem tetap berfungsi untuk kembali ke `MyHomePage`. Sementara itu, opsi **Home** pada `LeftDrawer` menggunakan `Navigator.pushReplacement()` ke `MyHomePage()` supaya layar formulir yang sedang dibuka langsung digantikan oleh beranda tanpa menumpuk riwayat layar berulang kali.
+
+2. **Peran `Scaffold`, `AppBar`, dan `Drawer` dalam Menjaga Konsistensi Struktur Halaman:**
+   - `Scaffold` menyediakan kerangka tata letak dasar Material Design yang seragam pada setiap layar (`MyHomePage`, `ProjectFormPage`, dan `ExperienceFormPage`). `AppBar` menjaga penempatan judul halaman dan tombol pembuka menu di bagian atas layar tetap konsisten, sedangkan `LeftDrawer` dipisahkan menjadi komponen *reusable* di `lib/widgets/left_drawer.dart` yang dipasang ke properti `drawer` di setiap `Scaffold` sehingga daftar navigasi antarlayar selalu identik.
+   - **Contoh penggunaan warna tema di lebih dari satu halaman:** Penggunaan `Theme.of(context).colorScheme.primary` (yang diturunkan dari *seed color* `Colors.indigo` pada `MyApp`) sebagai `backgroundColor` pada `AppBar` di `MyHomePage` dan `ExperienceFormPage`, warna latar `DrawerHeader` di `LeftDrawer`, serta warna tombol utama **Simpan**.
+
+3. **Alasan Pemilihan Tata Letak Formulir serta Peran *Widget* Pengatur Jarak dan Penggulir:**
+   - Tata letak vertikal satu kolom (`Column` dengan `CrossAxisAlignment.stretch`) dipilih karena selaras dengan orientasi layar ponsel yang memanjang secara vertikal, memudahkan pengguna memindai urutan kolom dari atas ke bawah, serta menjaga proporsi lebar kolom dan tombol pada berbagai ukuran layar.
+   - Ketika ruang layar terbatas (seperti pada layar ponsel sempit atau saat *keyboard* virtual muncul), *widget* pengatur jarak (`Padding` dan `SizedBox`) memberikan ruang napas yang jelas antar-`TextFormField`, pesan *error* validasi, dan tombol aksi agar tidak saling bertumpuk. Di sisi lain, `SingleChildScrollView` membungkus seluruh isi `Form` sehingga halaman tetap dapat di-*scroll* secara vertikal dan tombol **Simpan** selalu terjangkau pengguna.
+
+4. **Peran `GlobalKey<FormState>`, `validator`, dan `validate()` saat Tombol Simpan Ditekan:**
+   - `GlobalKey<FormState>` (`_formKey`) berfungsi sebagai kunci referensi unik untuk mengakses dan mengelola *state* internal *widget* `Form` dari luar *widget tree*-nya.
+   - `validator` adalah fungsi pemeriksaan pada tiap kolom (dimodularisasi dalam kelas `ExperienceValidators`) yang mengevaluasi kelayakan data masukan dan mengembalikan pesan *error* jika aturan tidak terpenuhi.
+   - Ketika tombol **Simpan** ditekan, `_formKey.currentState!.validate()` memicu eksekusi seluruh fungsi `validator` di dalam `Form` secara bersamaan. Jika seluruh kolom valid (`null`), `showDialog()` akan menampilkan `AlertDialog` ringkasan isian, sedangkan jika ada yang tidak valid, pesan *error* langsung ditampilkan di bawah kolom terkait.
+   - **Contoh nilai yang ditolak validasi:** Memasukkan *string* berisi spasi saja (`"   "`) pada **Judul Pengalaman** ditolak oleh `ExperienceValidators.validateTitle` (`value.trim().isEmpty`) dengan pesan `"Judul pengalaman tidak boleh kosong!"`, atau mengisi tautan tanpa skema seperti `"github.com/hasbi"` pada **URL Thumbnail** ditolak oleh `ExperienceValidators.validateThumbnailUrl` (`Uri.tryParse`).
+   - **Mengapa pemilihan jenis *input* atau papan ketik saja belum cukup:** Pengaturan seperti `TextInputType.url` atau `readOnly: true` hanya mengatur tata letak *keyboard* virtual dan tidak mencegah pengguna melakukan *paste* teks berformat salah, mengosongkan kolom wajib, mengisi spasi kosong, atau melampaui batas `max_length: 255` pada model Django `Experience`. Validasi terprogram tetap diperlukan untuk menjamin integritas data.
+
+#### AI Disclosure & Analisis Kritis Pembelajaran (Tugas 8)
+
+- **Tools yang Digunakan:** Google Gemini sebagai *pair-programmer* dan *learning coach*.
+- **Strategi & Log Prompting:**
+  Saya menerapkan pendekatan bertahap (*incremental development*) dengan menyertakan definisi `models.py` dari proyek Django sebelumnya agar struktur formulir Flutter sinkron dengan skema basis data. Contoh *prompt* yang digunakan:
+  - *"Ini models.py Django saya untuk Experience (`title`, `description`, `category`, `thumbnail`, `started_at`, `ended_at`). Buatkan validator modular terpisah di Dart yang memeriksa spasi kosong, panjang maksimal 255 karakter, format URL opsional, dan urutan tanggal."*
+  - *"Bagaimana cara menggabungkan `showDatePicker()` dan `SwitchListTile` untuk status masih berlangsung pada `StatefulWidget` agar tanggal selesai otomatis dibersihkan dan tidak divalidasi saat status aktif?"*
+  - *"Jelaskan perbedaan perilaku stack antara `Navigator.push()` pada kartu aksi beranda dan `Navigator.pushReplacement()` pada `LeftDrawer`."*
+- **Analisis Kritis Keterbatasan AI:**
+  1. **Properti Widget yang Usang (*Deprecated*):** Pada saran awal `DropdownButtonFormField`, AI masih menggunakan properti `value` yang sudah berstatus *deprecated* pada versi Flutter terbaru dan memicu peringatan di linter.
+  2. **Keterikatan Logika (*Tight Coupling*):** Draf awal AI meletakkan seluruh fungsi validasi langsung di dalam metode `build()` pada `ExperienceFormPage`, sehingga membuat file layar terlalu panjang dan sulit dirawat.
+  3. **Siklus Hidup Controller:** AI belum menyertakan pembersihan `TextEditingController` di dalam `dispose()`, yang berpotensi menimbulkan kebocoran memori (*memory leak*) saat halaman ditutup.
+- **Perbaikan & Verifikasi Manual:**
+  - Mengubah properti `DropdownButtonFormField` menjadi `initialValue` agar sesuai standar Flutter terkini.
+  - Memisahkan seluruh logika validasi ke kelas `ExperienceValidators` di `lib/utils/experience_validators.dart` serta menambahkan `dispose()` untuk kelima `TextEditingController`.
+  - Melakukan pengujian manual pada *browser* Chrome dengan simulasi ukuran layar ponsel sempit untuk memastikan pesan *error* muncul saat kolom wajib dikosongkan, `AlertDialog` menampilkan ringkasan lengkap saat valid, dan tombol **Simpan** tetap terjangkau saat di-*scroll*, lalu memverifikasi dengan `flutter analyze` hingga bebas isu (*No issues found*).
