@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myportofolio_mobile/project_form.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
 
 /// Model data untuk item menu pada halaman utama.
@@ -137,6 +138,7 @@ class ItemCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(15),
       child: InkWell(
         onTap: () {
+          // Memunculkan SnackBar ketika diklik
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -145,6 +147,16 @@ class ItemCard extends StatelessWidget {
                 behavior: SnackBarBehavior.floating,
               ),
             );
+
+          // Navigate ke halaman yang sesuai
+          if (item.name == "Tambah Proyek") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProjectFormPage(),
+              ),
+            );
+          }
         },
         borderRadius: BorderRadius.circular(15),
         child: Container(
