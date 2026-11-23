@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:myportofolio_mobile/screens/experience_form.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
+import 'package:myportofolio_mobile/screens/project_list_screen.dart';
+import 'package:myportofolio_mobile/services/auth_state.dart';
+import 'package:myportofolio_mobile/widgets/auth_guard.dart';
+import 'package:provider/provider.dart';
 
 /// Komponen reusable untuk menampilkan kartu tombol interaktif pada beranda.
 class ItemCard extends StatelessWidget {
@@ -15,8 +19,33 @@ class ItemCard extends StatelessWidget {
       color: item.color,
       borderRadius: BorderRadius.circular(15),
       child: InkWell(
-        onTap: () {
-          // Memunculkan SnackBar ketika diklik
+        onTap: () async {
+          if (item.name == "Logout") {
+            final auth = context.read<AuthState>();
+            if (!auth.isLoggedIn) {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  const SnackBar(
+                    content: Text("Kamu belum login."),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              return;
+            }
+            await auth.logout();
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(
+                  content: Text("Berhasil logout!"),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            return;
+          }
+
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -26,8 +55,16 @@ class ItemCard extends StatelessWidget {
               ),
             );
 
-          // Navigasi ke halaman formulir yang sesuai menggunakan Navigator.push
-          if (item.name == "Tambah Proyek") {
+          if (item.name == "Lihat Proyek") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProjectListScreen(),
+              ),
+            );
+          } else if (item.name == "Tambah Proyek") {
+            final allowed = await ensureLoggedIn(context);
+            if (!allowed || !context.mounted) return;
             Navigator.push(
               context,
               MaterialPageRoute(
