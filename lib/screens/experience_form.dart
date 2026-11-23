@@ -111,8 +111,9 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
       final thumbnailText = _thumbnailController.text.trim().isEmpty
           ? '-'
           : _thumbnailController.text.trim();
-      final endDateText =
-          _isOngoing ? 'Masih Berlangsung' : _formatDate(_endedAt!);
+      final endDateText = _isOngoing
+          ? 'Masih Berlangsung'
+          : _formatDate(_endedAt!);
 
       showDialog(
         context: context,

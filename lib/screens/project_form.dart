@@ -51,9 +51,10 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
     );
 
     try {
-      final created = await context
-          .read<ApiClient>()
-          .createProject(newProject, token: token);
+      final created = await context.read<ApiClient>().createProject(
+        newProject,
+        token: token,
+      );
       if (!mounted) return;
 
       await showDialog<void>(
@@ -68,7 +69,9 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                 children: [
                   Text('Judul: ${created.title}'),
                   const SizedBox(height: 4),
-                  Text('Kategori: ${_categories[created.category] ?? created.category}'),
+                  Text(
+                    'Kategori: ${_categories[created.category] ?? created.category}',
+                  ),
                   const SizedBox(height: 4),
                   Text('Deskripsi: ${created.description}'),
                   if (created.thumbnail.isNotEmpty) ...[

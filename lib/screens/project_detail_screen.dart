@@ -23,8 +23,7 @@ class ProjectDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final categoryLabel =
-        _categoryLabels[project.category] ?? project.category;
+    final categoryLabel = _categoryLabels[project.category] ?? project.category;
     final hasThumbnail = project.thumbnail.trim().isNotEmpty;
 
     return Scaffold(
@@ -81,9 +80,8 @@ class ProjectDetailScreen extends StatelessWidget {
             ],
             Text(
               project.title,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(context).textTheme.headlineSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8.0),
             Wrap(
@@ -109,16 +107,14 @@ class ProjectDetailScreen extends StatelessWidget {
               Text(
                 'Periode: ${_formatDate(project.startedAt!)} - '
                 '${project.endedAt != null ? _formatDate(project.endedAt!) : 'Masih Berlangsung'}',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey.shade700,
-                    ),
+                style: Theme.of(context).textTheme.bodyMedium
+                    ?.copyWith(color: Colors.grey.shade700),
               ),
             const Divider(height: 28.0),
             Text(
               'Deskripsi',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(context).textTheme.titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8.0),
             Text(

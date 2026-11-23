@@ -92,9 +92,7 @@ class _ProjectListScreenState extends State<ProjectListScreen> {
                       constraints: BoxConstraints(
                         minHeight: constraints.maxHeight,
                       ),
-                      child: const Center(
-                        child: Text('No projects found.'),
-                      ),
+                      child: const Center(child: Text('No projects found.')),
                     ),
                   );
                 },

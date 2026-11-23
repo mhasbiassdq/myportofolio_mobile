@@ -27,7 +27,8 @@ class ExperienceValidators {
       return null;
     }
     final uri = Uri.tryParse(value.trim());
-    final isValidScheme = uri != null &&
+    final isValidScheme =
+        uri != null &&
         (uri.scheme == 'http' || uri.scheme == 'https') &&
         uri.host.isNotEmpty;
     if (!isValidScheme) {

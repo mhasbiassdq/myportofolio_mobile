@@ -35,7 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
         ..hideCurrentSnackBar()
         ..showSnackBar(
           SnackBar(
-            content: Text('Login gagal (HTTP ${e.statusCode}). Periksa kredensial Anda.'),
+            content: Text(
+              'Login gagal (HTTP ${e.statusCode}). Periksa kredensial Anda.',
+            ),
             behavior: SnackBarBehavior.floating,
           ),
         );

@@ -67,9 +67,7 @@ class ItemCard extends StatelessWidget {
             if (!allowed || !context.mounted) return;
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => const ProjectFormPage(),
-              ),
+              MaterialPageRoute(builder: (context) => const ProjectFormPage()),
             );
           } else if (item.name == "Tambah Pengalaman") {
             Navigator.push(
@@ -86,11 +84,7 @@ class ItemCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                item.icon,
-                color: Colors.white,
-                size: 36.0,
-              ),
+              Icon(item.icon, color: Colors.white, size: 36.0),
               const SizedBox(height: 8.0),
               Text(
                 item.name,
