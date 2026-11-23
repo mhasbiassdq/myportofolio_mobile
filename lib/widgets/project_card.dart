@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:myportofolio_mobile/screens/experience_form.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
 
-/// Komponen reusable untuk menampilkan tombol interaktif.
+/// Komponen reusable untuk menampilkan kartu tombol interaktif pada beranda.
 class ItemCard extends StatelessWidget {
   final ItemHomepage item;
 
@@ -25,12 +26,19 @@ class ItemCard extends StatelessWidget {
               ),
             );
 
-          // Navigate ke halaman yang sesuai
+          // Navigasi ke halaman formulir yang sesuai menggunakan Navigator.push
           if (item.name == "Tambah Proyek") {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const ProjectFormPage(),
+              ),
+            );
+          } else if (item.name == "Tambah Pengalaman") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ExperienceFormPage(),
               ),
             );
           }
