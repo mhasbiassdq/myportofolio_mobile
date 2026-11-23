@@ -275,3 +275,6 @@ AI sangat membantu dalam memberikan kerangka (*boilerplate*) awal dan ide penyel
   - Mengubah properti `DropdownButtonFormField` menjadi `initialValue` agar sesuai standar Flutter terkini.
   - Memisahkan seluruh logika validasi ke kelas `ExperienceValidators` di `lib/utils/experience_validators.dart` serta menambahkan `dispose()` untuk kelima `TextEditingController`.
   - Melakukan pengujian manual pada *browser* Chrome dengan simulasi ukuran layar ponsel sempit untuk memastikan pesan *error* muncul saat kolom wajib dikosongkan, `AlertDialog` menampilkan ringkasan lengkap saat valid, dan tombol **Simpan** tetap terjangkau saat di-*scroll*, lalu memverifikasi dengan `flutter analyze` hingga bebas isu (*No issues found*).
+
+Link Chat Ai:
+https://share.gemini.google/PHPtncLiDk2J
