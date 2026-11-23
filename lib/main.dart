@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myportofolio_mobile/menu.dart';
+import 'package:myportofolio_mobile/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,14 +15,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'MyPortfolio',
       theme: ThemeData(
-        // Konfigurasi tema utama aplikasi menggunakan skema warna Material 3
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.indigo,
           secondary: Colors.amber[700],
         ),
         useMaterial3: true,
       ),
-      home: MyHomePage(), // Memanggil halaman utama
+      home: MyHomePage(),
     );
   }
 }
